@@ -1,0 +1,16 @@
+import random
+
+function randomised():
+  nums = [1, 2, 3, 4]
+  return random.choice(nums)
+
+
+
+while working = True:
+  guess = input("pick a number from 1-4:")
+  random = randomised()
+  if guess == random:
+    print("correct!")
+  else:
+    print("wrong")
+    working = False
