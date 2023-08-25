@@ -1,1 +1,182 @@
+"""
+Author: wedbla
+version: 4.1
+copyright: i have no copyright
+"""
+
+import random
+
+TARGET_WORDS = './word-bank/target_words.txt'
+
+VALID_WORDS = './word-bank/all_words.txt'
+
+MAX_TRIES = 6
+
+used_words = list()
+
+
+def word_chooser(file_name):
+    """
+    this chooses the word the player has to guess
+
+    Parameters:
+        file_name (str): string value of file path
+
+
+    Returns:
+        str: 5 letter word
+    """
+    target_words = list()
+    try:
+        # this opens the file and adds each word to a list and picks a random one from that list
+        for line in open(file_name):
+            target_words.append(line.rstrip())
+        target_word = random.choice(target_words)
+        return target_word
+    except:
+        raise FileNotFoundError(file_name)
+
+
+def score_guess(guess, target_word):
+    """
+    given a guess and the target word, returns a display of what they got correct
+
+    Parameters:
+        guess (str): 5-letter word
+        target_word (str): 5-letter word
+
+
+    Returns:
+        tuple: [guess in capital letters, display of colours]
+    """
+    target_letters = list(target_word)
+    guess_letters = list(guess)
+    position = 0
+    score = [0, 0, 0, 0, 0]
+    # this first for loop loops through the guess and checks if any letters match in guess and target_word
+    # and replaces any letters that matched with different symbols
+    for letters in guess:
+        if letters == target_letters[position]:
+            score[position] = 2
+            guess_letters[position] = '_'
+            target_letters[position] = '+'
+        position += 1
+    position = 0
+    new_letters = rewriting_letters(target_letters)
+    # this second for loop loops through guess and checks each letter and sees if it is in the target word
+    # if they are in the target word as well it will blank them out
+    for letter in guess:
+        if letter in target_letters:
+            new_letters = rewriting_letters(target_letters)
+            score[position] = 1
+            found = new_letters.find(letter)
+            target_letters[found] = '+'
+            guess_letters[position] = '_'
+        position += 1
+    score = tuple(score)
+    guess_display = ''
+    # this creates the display through print
+    # from here to
+    for letter in guess:
+        guess_display += str(letter.upper()) + '  '
+    display = ''
+    for thing in score:
+        if thing == 1:
+            display += '🟨 '
+        elif thing == 0:
+            display += '⬜ '
+        elif thing == 2:
+            display += '🟩 '
+    # here
+    return [guess_display, display]
+
+
+def rewriting_letters(target_letters):
+    """
+
+    this takes the old letters in the target word list called target_letters
+    and makes it back into a string then returns the string
+
+
+    Parameters:
+        target_letters (list): list of letters in the target word
+
+
+    Returns:
+        str: 5 letter word possibly with some blanked letters
+    """
+    # this just makes a string of the target_letters becuase .find doesn't work on lists
+    new_letters = ''
+    for letter in target_letters:
+        new_letters += letter
+    return new_letters
+
+
+def ask_for_guess(file_name):
+    """
+    this asks the user for an input and checks if it is the correct length and is an actual word
+
+    Parameters:
+        file_name (str): string value of file path
+
+
+    Returns:
+        str: users guess
+    """
+    while True:
+        # this asks the user for an input
+        guess = input('what is your guess?').lower()
+        # checks if the guess is too long or too short and is a valid word
+        if guess == 'help':
+            help_me()
+        # this elif checks if the word is too long and prints the corresponding output
+        elif len(guess) > 5:
+            print('word is too long')
+        # this elif checks if the word is too short and prints the corresponding output
+        elif len(guess) < 5:
+            print('the word is too short')
+        else:
+            # this checks each line in the file to see if it matches the users guess
+            for line in open(file_name):
+                if line.rstrip() == guess:
+                    return guess
+            print('not a valid word')
+
+
+def help_me():
+    """
+    this prints simple instructions on how to play
+    no parameters or returns it only prints instructions on how to play
+    """
+    print('when playing this game you can enter your guess and try to guess the word with a five letter word')
+    print('⬜ is miss\n🟨 is misplaced\n🟩 is correct')
+
+
+tries = 0
+target_word = word_chooser(TARGET_WORDS)
+while tries < MAX_TRIES:
+    print('to ask for help, type help')
+    guess = ask_for_guess(VALID_WORDS)
+    if guess == target_word:
+        print("Your guess is correct!")
+        break
+    else:
+        # this adds the players guess to a list and runs the score_guess function
+        # this also prints the display
+        used_words.append(guess)
+        function = score_guess(guess, target_word)
+        # guess_display equals the first part of function which is the guess in uppercase
+        guess_display = function[0]
+        # correct_display equals the second part of function which is what the player got correct, misplaced and wrong
+        correct_display = function[1]
+        print(guess_display.rstrip())
+        print(correct_display)
+        tries += 1
+        if MAX_TRIES - tries == 0:
+            continue
+        elif MAX_TRIES - tries != 0:
+            print(f"you have {MAX_TRIES - tries} tries left")
+        print(f'your used words are {used_Words}')
+print(f'the word was: {target_word}')
+print("Game Over")
 
