@@ -6,9 +6,9 @@ copyright: i have no copyright
 
 import random
 
-TARGET_WORDS = './word-bank/target_words.txt'
+TARGET_WORDS = './target_words.txt'
 
-VALID_WORDS = './word-bank/all_words.txt'
+VALID_WORDS = './all_words.txt'
 
 MAX_TRIES = 6
 
