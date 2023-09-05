@@ -6,9 +6,9 @@ copyright: i have no copyright
 
 import random
 
-TARGET_WORDS = './target_words.txt'
+TARGET_WORDS = 'word bank/target_words.txt'
 
-VALID_WORDS = './all_words.txt'
+VALID_WORDS = 'word bank/target_words.txt'
 
 MAX_TRIES = 6
 
@@ -176,7 +176,7 @@ while tries < MAX_TRIES:
             continue
         elif MAX_TRIES - tries != 0:
             print(f"you have {MAX_TRIES - tries} tries left")
-        print(f'your used words are {used_Words}')
+        print(f'your used words are {used_words}')
 print(f'the word was: {target_word}')
 print("Game Over")
 
