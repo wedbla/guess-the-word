@@ -5,6 +5,8 @@ copyright: i have no copyright
 """
 
 import random
+import time
+
 
 TARGET_WORDS = 'word bank/target_words.txt'
 
@@ -12,7 +14,41 @@ VALID_WORDS = 'word bank/target_words.txt'
 
 MAX_TRIES = 6
 
+target_word = 0
+
 used_words = list()
+
+while True:
+    question_wotd = input("do you want to do word of the day?")
+
+    if question_wotd == "yes":
+
+        file_name = open("word bank/wotd.txt", mode="r")
+
+        for line in file_name:
+            if line != "":
+                target_word = line.rstrip()
+                break
+            else:
+                break
+        print(target_word)
+        if target_word != 0:
+            break
+        target_words = list()
+        try:
+            for line in open(TARGET_WORDS):
+                target_words.append(line.rstrip())
+            target_word = random.choice(target_words)
+            file_name = open("word bank/wotd.txt", mode="w")
+            file_name.write(target_word)
+            print(target_word)
+            break
+        except:
+            raise FileNotFoundError(TARGET_WORDS)
+    elif question_wotd == "no":
+        break
+    else:
+        print("try again")
 
 
 def word_chooser(file_name):
@@ -153,7 +189,11 @@ def help_me():
 
 
 tries = 0
-target_word = word_chooser(TARGET_WORDS)
+
+if target_word != 0:
+    pass
+else:
+    target_word = word_chooser(TARGET_WORDS)
 while tries < MAX_TRIES:
     print('to ask for help, type help')
     guess = ask_for_guess(VALID_WORDS)
