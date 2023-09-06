@@ -23,24 +23,37 @@ while True:
 
     if question_wotd == "yes":
 
-        file_name = open("word bank/wotd.txt", mode="r")
+        file_name = open("word bank/wotd.txt")
+
+        Time = time.ctime()
+        print(Time[4:10])
+
+        lines = list()
 
         for line in file_name:
             if line != "":
-                target_word = line.rstrip()
+                lines.append(line.rstrip())
+        count = 0
+        for i in lines:
+            count += 1
+        print("count", count)
+        if count == 2:
+            print(lines[1])
+            if lines[1] == Time[4:10]:
+                print("yo")
+                target_word = lines[0].rstrip()
+                print(target_word)
                 break
-            else:
-                break
-        print(target_word)
-        if target_word != 0:
-            break
         target_words = list()
+        print(target_word)
         try:
             for line in open(TARGET_WORDS):
                 target_words.append(line.rstrip())
             target_word = random.choice(target_words)
             file_name = open("word bank/wotd.txt", mode="w")
             file_name.write(target_word)
+            file_name.write("\n")
+            file_name.write(Time[4:10])
             print(target_word)
             break
         except:
