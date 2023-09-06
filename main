@@ -26,7 +26,6 @@ while True:
         file_name = open("word bank/wotd.txt")
 
         Time = time.ctime()
-        print(Time[4:10])
 
         lines = list()
 
@@ -38,14 +37,10 @@ while True:
             count += 1
         print("count", count)
         if count == 2:
-            print(lines[1])
             if lines[1] == Time[4:10]:
-                print("yo")
                 target_word = lines[0].rstrip()
-                print(target_word)
                 break
         target_words = list()
-        print(target_word)
         try:
             for line in open(TARGET_WORDS):
                 target_words.append(line.rstrip())
@@ -54,7 +49,6 @@ while True:
             file_name.write(target_word)
             file_name.write("\n")
             file_name.write(Time[4:10])
-            print(target_word)
             break
         except:
             raise FileNotFoundError(TARGET_WORDS)
