@@ -35,7 +35,6 @@ while True:
         count = 0
         for i in lines:
             count += 1
-        print("count", count)
         if count == 2:
             if lines[1] == Time[4:10]:
                 target_word = lines[0].rstrip()
