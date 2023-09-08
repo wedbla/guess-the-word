@@ -18,6 +18,37 @@ target_word = 0
 
 used_words = list()
 
+
+def WOTD(file_name):
+
+    global target_word
+
+    Time = time.ctime()
+
+    lines = list()
+
+    for line in file_name:
+        if line != "":
+            lines.append(line.rstrip())
+    count = 0
+    for i in lines:
+        count += 1
+    if count == 2:
+        if lines[1] == Time[4:10]:
+            target_word = lines[0].rstrip()
+            return
+    target_words = list()
+    try:
+        for line in open(TARGET_WORDS):
+            target_words.append(line.rstrip())
+        target_word = random.choice(target_words)
+        file_name = open("word bank/wotd.txt", mode="w")
+        file_name.write(target_word)
+        file_name.write("\n")
+        file_name.write(Time[4:10])
+    except:
+        raise FileNotFoundError(TARGET_WORDS)
+
 while True:
     question_wotd = input("do you want to do word of the day?")
 
@@ -25,32 +56,10 @@ while True:
 
         file_name = open("word bank/wotd.txt")
 
-        Time = time.ctime()
+        WOTD(file_name)
+        break
 
-        lines = list()
 
-        for line in file_name:
-            if line != "":
-                lines.append(line.rstrip())
-        count = 0
-        for i in lines:
-            count += 1
-        if count == 2:
-            if lines[1] == Time[4:10]:
-                target_word = lines[0].rstrip()
-                break
-        target_words = list()
-        try:
-            for line in open(TARGET_WORDS):
-                target_words.append(line.rstrip())
-            target_word = random.choice(target_words)
-            file_name = open("word bank/wotd.txt", mode="w")
-            file_name.write(target_word)
-            file_name.write("\n")
-            file_name.write(Time[4:10])
-            break
-        except:
-            raise FileNotFoundError(TARGET_WORDS)
     elif question_wotd == "no":
         break
     else:
